@@ -1,0 +1,19 @@
+version: "2"
+services:
+  mongo-eligibility:
+    image: mongo:3.4
+    ports:
+      - "27017-27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=admin
+    volumes:
+      - eligibility-db:/data/db
+  eligibility-init:
+    build: .
+    environment:
+      - MONGO_URI=mongodb://admin:admin@mongo-eligibility:27017/eligibilityDB?authSource=admin
+    depends_on:
+      - mongo-eligibility
+volumes:
+  eligibility-db:
